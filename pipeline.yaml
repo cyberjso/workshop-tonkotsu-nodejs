@@ -1,0 +1,18 @@
+name: Workshop pipeline
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v1
+    - uses: actions/setup-node@v1
+      whith:
+        node-version: 12.x
+    - name: Build  application
+      run: npm install 
+    - name: Run the tests
+      run: npm test
