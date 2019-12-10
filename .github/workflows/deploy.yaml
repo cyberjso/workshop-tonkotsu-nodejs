@@ -1,0 +1,24 @@
+name: Deployment pipeline
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: montudor/action-zip@v0.1.0
+        with:
+          args: zip -qq application.zip -d *
+
+      - uses:  appleboy/lambda-action@master
+      - secrets:  [
+          "AWS_ACCESS_KEY_ID",
+          "AWS_SECRET_ACCESS_KEY",
+          "AWS_REGION"
+        ]
+      -  args:  [
+          "--function-name", "hello-world",
+          "--zip-file", "application.zip",
+        ]
