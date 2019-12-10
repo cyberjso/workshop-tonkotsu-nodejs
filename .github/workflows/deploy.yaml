@@ -8,17 +8,21 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: montudor/action-zip@v0.1.0
-        with:
-          args: zip -qq application.zip -d *
+    - uses: actions/checkout@v1
+    - uses: actions/setup-node@v1
+      with:
+        node-version: 12.x
 
-      - uses:  appleboy/lambda-action@master
-      - secrets:  [
-          "AWS_ACCESS_KEY_ID",
-          "AWS_SECRET_ACCESS_KEY",
-          "AWS_REGION"
-        ]
-      -  args:  [
-          "--function-name", "hello-world",
-          "--zip-file", "application.zip",
-        ]
+    - name: Build  application
+      run: npm install 
+
+    - name: Run the tests
+      run: npm test    
+
+    - run: zip lambda.zip *
+    - uses: stcalica/update-lambda
+      with:
+        package: lambda.zip
+        function-name: TEST-FUNCTION
+        AWS_SECRET_ID: ${{ secrets.AWS_SECRET_ID }}
+        AWS_SECRET_KEY: ${{ secrets.AWS_SECRET_KEY }}
