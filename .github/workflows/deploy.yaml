@@ -19,7 +19,9 @@ jobs:
     - name: Run the tests
       run: npm test    
 
+    - uses: montudor/action-zip@v0.1.0
     - run: zip lambda.zip *
+    
     - uses: stcalica/update-lambda
       with:
         package: lambda.zip
