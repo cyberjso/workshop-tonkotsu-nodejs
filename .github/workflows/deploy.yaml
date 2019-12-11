@@ -2,30 +2,25 @@ name: Deployment pipeline
 
 on: [push]
 
+
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
     steps:
-    - uses: actions/checkout@v1
-    - uses: actions/setup-node@v1
+    
+    - name: Checkout source code
+      uses: actions/checkout@v1
+
+    - name: Generate deployment package
+      run: zip -r deploy.zip *
+      
+    - name: Deploy to EB
+      uses: einaregilsson/beanstalk-deploy@v3
       with:
-        node-version: 12.x
-
-    - name: Build  application
-      run: npm install 
-
-    - name: Run the tests
-      run: npm test    
-
-    - uses: montudor/action-zip@v0.1.0
-    - run: zip lambda.zip -R *
-
-    - uses: stcalica/update-lambda@0.0.2
-      with:
-        package: lambda.zip
-        function-name: githubTrainingJackFunction
-        AWS_REGION: "us-east-2"
-        AWS_SECRET_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        AWS_SECRET_KEY: ${{ secrets.AWS_SECRET_KEY }}
+        aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws_secret_key: ${{ secrets.AWS_SECRET_KEY }}
+        application_name: eb-github
+        environment_name:  devel
+        version_label: 11
+        region: us-east-1
+        deployment_package: deploy.zip
