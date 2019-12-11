@@ -22,7 +22,7 @@ jobs:
     - uses: montudor/action-zip@v0.1.0
     - run: zip lambda.zip *
 
-    - uses: stcalica/update-lambda@1
+    - uses: stcalica/update-lambda@0.0.2
       with:
         package: lambda.zip
         function-name: TEST-FUNCTION
