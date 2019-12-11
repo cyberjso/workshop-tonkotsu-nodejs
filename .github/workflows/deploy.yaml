@@ -25,7 +25,7 @@ jobs:
     - uses: stcalica/update-lambda@0.0.2
       with:
         package: lambda.zip
-        function-name: github-training-function
+        function-name: githubTrainingJackFunction
         AWS_REGION: "us-east-2"
         AWS_SECRET_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_KEY: ${{ secrets.AWS_SECRET_KEY }}
