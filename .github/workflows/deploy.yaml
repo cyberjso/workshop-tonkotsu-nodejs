@@ -20,7 +20,7 @@ jobs:
       run: npm test    
 
     - uses: montudor/action-zip@v0.1.0
-    - run: zip lambda.zip *
+    - run: zip lambda.zip -R *
 
     - uses: stcalica/update-lambda@0.0.2
       with:
